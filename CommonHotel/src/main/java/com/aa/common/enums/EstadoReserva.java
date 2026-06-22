@@ -16,7 +16,7 @@ private final Long codigo;
 	
 	private final String descipcion;
 	
-	public static EstadoReserva obtenerEstadoHabitacionPorCodigo(Long codigo) {
+	public static EstadoReserva obtenerEstadoReservaPorCodigo(Long codigo) {
 
 
         for (EstadoReserva d : values()) {
