@@ -32,6 +32,21 @@ public class ValoresNumericosUtils
 
     }
     
+    public static void validaDoublePositivo(Double numero,String mensaje){
+        validarNumeroRequerido(numero);
+
+        if (numero<=0.0)
+            throw new IllegalArgumentException(mensaje);
+
+    }
+    
+    public static  void validarEnteroMinimoA(Integer entero,Integer min, String mensaje){
+        validarNumeroRequerido(entero);
+
+        if (entero<min)
+            throw new IllegalArgumentException(mensaje);
+    }
+    
     public static void validarRangoShort(Short numero, short min, short max, String mensaje) {
     	validarNumeroRequerido(numero);
     	
