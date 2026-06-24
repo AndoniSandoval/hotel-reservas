@@ -14,14 +14,15 @@ spring:
       server:
         webflux:
           routes:
-            - id: msv-
-              uri: lb://msv-
+            - id: ms-huespedes
+              uri: lb://ms-huespedes
               predicates:
-                - Path=/api/-/**
+                - Path=/api/huespedes/**
               filters:
                 - StripPrefix=2
     loadbalancer:
       enabled: true
+
 eureka:
   client:
     service-url:

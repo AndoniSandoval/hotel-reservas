@@ -12,7 +12,7 @@ import com.aa.huespedes.entities.Huesped;
 import com.aa.huespedes.mappers.HuespedMapper;
 import com.aa.huespedes.repositories.HuespedRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -113,19 +113,19 @@ public class HuespedServiceImpl implements HuespedService{
         log.info("Validando email unico...");
         if (huespedRepository.existsByEmailAndEstadoRegistro(
                 request.email().trim(), EstadoRegistro.ACTIVO))
-            throw new IllegalArgumentException(
+            throw new IllegalStateException(
                     "Ya existe un huesped activo con el email: " + request.email());
 
         log.info("Validando telefono unico...");
         if (huespedRepository.existsByTelefonoAndEstadoRegistro(
                 request.telefono().trim(), EstadoRegistro.ACTIVO))
-            throw new IllegalArgumentException(
+            throw new IllegalStateException(
                     "Ya existe un huesped activo con el telefono: " + request.telefono());
 
         log.info("Validando documento unico...");
         if (huespedRepository.existsByDocumentoAndEstadoRegistro(
                 request.documento().trim(), EstadoRegistro.ACTIVO))
-            throw new IllegalArgumentException(
+            throw new IllegalStateException(
                     "Ya existe un huesped activo con el documento: " + request.documento());
     }
 
@@ -133,19 +133,19 @@ public class HuespedServiceImpl implements HuespedService{
         log.info("Validando email unico en actualizacion...");
         if (huespedRepository.existsByEmailAndEstadoRegistroAndIdNot(
                 request.email().trim(), EstadoRegistro.ACTIVO, id))
-            throw new IllegalArgumentException(
+            throw new IllegalStateException(
                     "Ya existe un huesped activo con el email: " + request.email());
 
         log.info("Validando telefono unico en actualizacion...");
         if (huespedRepository.existsByTelefonoAndEstadoRegistroAndIdNot(
                 request.telefono().trim(), EstadoRegistro.ACTIVO, id))
-            throw new IllegalArgumentException(
+            throw new IllegalStateException(
                     "Ya existe un huesped activo con el telefono: " + request.telefono());
 
         log.info("Validando documento unico en actualizacion...");
         if (huespedRepository.existsByDocumentoAndEstadoRegistroAndIdNot(
                 request.documento().trim(), EstadoRegistro.ACTIVO, id))
-            throw new IllegalArgumentException(
+            throw new IllegalStateException(
                     "Ya existe un huesped activo con el documento: " + request.documento());
     }
 
