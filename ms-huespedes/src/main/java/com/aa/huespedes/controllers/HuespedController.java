@@ -10,8 +10,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@Validated
-@RequestMapping("/huespedes")
 public class HuespedController extends CommonController<HuespedRequest, HuespedResponse, HuespedService> {
 
     public HuespedController(HuespedService service) {
