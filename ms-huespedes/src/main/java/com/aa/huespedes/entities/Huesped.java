@@ -78,6 +78,10 @@ public class Huesped {
     public void preUpdate() {
         this.fechaActualizacion = LocalDate.now();
     }
+    
+    public void eliminar() {
+        this.estadoRegistro = EstadoRegistro.ELIMINADO;
+    }
 
     public void actualizar(String nombre, String apellidoPaterno, String apellidoMaterno,
                            String email, String telefono, String documento, String nacionalidad) {
