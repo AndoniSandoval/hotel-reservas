@@ -41,6 +41,10 @@ public class HabitacionesServiceImpl implements HabitacionesService{
 	@Override
 	public HabitacionResponse registrar(HabitacionRequest request) {
 		// TODO Auto-generated method stub
+		
+		if(habitacionesRepository.existsByNumeroHabitacion(request.numeroHabitacion()))
+			throw new IllegalArgumentException("Ya existe una habitacion con el numero: "+request.numeroHabitacion());
+		
 		Habitaciones habitacion = habitacionMapper.requestEntidad(request);
 		
 		habitacionesRepository.save(habitacion);
@@ -51,7 +55,13 @@ public class HabitacionesServiceImpl implements HabitacionesService{
 	@Override
 	public HabitacionResponse actualizar(HabitacionRequest request, Long id) {
 		// TODO Auto-generated method stub
+		
+		
 		Habitaciones habitacion = obtenerHabitacionActivaPorIdOException(id);
+		
+		if(habitacionesRepository.existsByNumeroHabitacionAndIdHabitacionNot(request.numeroHabitacion(),id))
+			throw new IllegalArgumentException("Ya existe una habitacion con el numero: "+request.numeroHabitacion());
+		
 		habitacion.actualizar(request.numeroHabitacion(), request.tipoHabitacion(),
 				request.precioNoche(), request.capacidad());
 		return habitacionMapper.entidadResponse(habitacion);

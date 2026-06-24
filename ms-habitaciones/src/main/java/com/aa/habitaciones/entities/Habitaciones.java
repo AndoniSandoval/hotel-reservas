@@ -1,4 +1,5 @@
 package com.aa.habitaciones.entities;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.aa.common.enums.EstadoHabitacion;
@@ -44,7 +45,7 @@ public class Habitaciones {
 	private TipoHabitacion tipoHabitacion;
 	
 	@Column(name = "PRECIO_NOCHE", nullable = false)
-	private Double precioNoche;
+	private BigDecimal precioNoche;
 	
 	@Column(name = "CAPACIDAD", nullable = false)
 	private Integer capacidad;
@@ -63,7 +64,7 @@ public class Habitaciones {
 	@Column(name = "FECHA_ACTUALIZACION", nullable = false)
 	private LocalDateTime fechaActualizacion;
 
-	public static Habitaciones crear(Integer numeroHabitacion, TipoHabitacion tipoHabitacion, Double precioNoche, Integer capacidad) {
+	public static Habitaciones crear(Integer numeroHabitacion, TipoHabitacion tipoHabitacion, BigDecimal precioNoche, Integer capacidad) {
 		validarDatos(numeroHabitacion,tipoHabitacion,precioNoche,capacidad);
 		return Habitaciones.builder()
 				.numeroHabitacion(numeroHabitacion)
@@ -77,7 +78,7 @@ public class Habitaciones {
 	}
 
 	
-	public void actualizar(Integer numeroHabitacion, TipoHabitacion tipoHabitacion, Double precioNoche, Integer capacidad) {
+	public void actualizar(Integer numeroHabitacion, TipoHabitacion tipoHabitacion, BigDecimal precioNoche, Integer capacidad) {
 		validarNoEliminado();
 		validarDisponibilidad();
 		validarDatos(numeroHabitacion,tipoHabitacion,precioNoche,capacidad);
@@ -104,10 +105,10 @@ public class Habitaciones {
 	}
 	
 	
-	private static void validarDatos(Integer numeroHabitacion, TipoHabitacion tipoHabitacion, Double precioNoche, Integer capacidad) {
+	private static void validarDatos(Integer numeroHabitacion, TipoHabitacion tipoHabitacion, BigDecimal precioNoche, Integer capacidad) {
 		
 		ValoresNumericosUtils.validarEnteroMinimoA(numeroHabitacion, 1 ,"El numero de habitacion es requerido y debe ser mayor a 0");
-		ValoresNumericosUtils.validaDoublePositivo(precioNoche, "El precio es requerido y debe ser positivo");
+		ValoresNumericosUtils.validarBigDecimalPositivo(precioNoche, "El precio es requerido y debe ser positivo");
 		ValoresNumericosUtils.validarEnteroMinimoA(capacidad, 1, "La capacidad es requerida y debe ser mayor o igual a 1");
 		
 		if(tipoHabitacion == null)

@@ -1,10 +1,13 @@
 package com.aa.habitaciones.mappers;
 
+import org.springframework.stereotype.Component;
+
 import com.aa.common.dto.habitaciones.HabitacionRequest;
 import com.aa.common.dto.habitaciones.HabitacionResponse;
 import com.aa.common.mappers.CommonMapper;
 import com.aa.habitaciones.entities.Habitaciones;
 
+@Component
 public class HabitacionMapper implements CommonMapper<HabitacionRequest, HabitacionResponse, Habitaciones>{
 
 	@Override
@@ -24,7 +27,9 @@ public class HabitacionMapper implements CommonMapper<HabitacionRequest, Habitac
 				entidad.getCapacidad(),
 				entidad.getEstadoHabitacion().toString(),
 				entidad.getFechaCreacion().toString(),
-				entidad.getFechaActualizacion().toString());
+				(entidad.getFechaActualizacion() == null)
+			    ? null
+			    : entidad.getFechaActualizacion().toString() );
 	}
 
 }
