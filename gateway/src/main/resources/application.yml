@@ -20,6 +20,20 @@ spring:
                 - Path=/api/huespedes/**
               filters:
                 - StripPrefix=2
+                
+            - id: ms-habitaciones
+              uri: lb://ms-habitaciones
+              predicates:
+                - Path=/api/habitaciones/**
+              filters:
+                - StripPrefix=2
+
+            - id: msv-
+              uri: lb://msv-
+              predicates:
+               - Path=/api/-/**
+              filters:
+               - StripPrefix=2
     loadbalancer:
       enabled: true
 

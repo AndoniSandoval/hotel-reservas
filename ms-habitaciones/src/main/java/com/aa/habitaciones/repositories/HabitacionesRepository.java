@@ -9,9 +9,9 @@ import java.util.Optional;
 
 
 public interface HabitacionesRepository extends JpaRepository<Habitaciones, Long> {
-	boolean existsByNumeroHabitacion(Integer numeroHabitacion);
+	boolean existsByNumeroHabitacionAndEstadoRegistro(Integer numeroHabitacion, EstadoRegistro estadoRegistro);
 	
-	boolean existsByNumeroHabitacionAndIdHabitacionNot(Integer numeroHabitacion, Long id);
+	boolean existsByNumeroHabitacionAndIdHabitacionNotAndEstadoRegistro(Integer numeroHabitacion, Long idHabitacion, EstadoRegistro estadoRegistro);
 
    List<Habitaciones> findByEstadoRegistro(EstadoRegistro estadoRegistro);
    

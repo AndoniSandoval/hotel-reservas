@@ -42,7 +42,7 @@ public class HabitacionesServiceImpl implements HabitacionesService{
 	public HabitacionResponse registrar(HabitacionRequest request) {
 		// TODO Auto-generated method stub
 		
-		if(habitacionesRepository.existsByNumeroHabitacion(request.numeroHabitacion()))
+		if(habitacionesRepository.existsByNumeroHabitacionAndEstadoRegistro(request.numeroHabitacion(),EstadoRegistro.ACTIVO))
 			throw new IllegalArgumentException("Ya existe una habitacion con el numero: "+request.numeroHabitacion());
 		
 		Habitaciones habitacion = habitacionMapper.requestEntidad(request);
@@ -59,7 +59,7 @@ public class HabitacionesServiceImpl implements HabitacionesService{
 		
 		Habitaciones habitacion = obtenerHabitacionActivaPorIdOException(id);
 		
-		if(habitacionesRepository.existsByNumeroHabitacionAndIdHabitacionNot(request.numeroHabitacion(),id))
+		if(habitacionesRepository.existsByNumeroHabitacionAndIdHabitacionNotAndEstadoRegistro(request.numeroHabitacion(),id,EstadoRegistro.ACTIVO))
 			throw new IllegalArgumentException("Ya existe una habitacion con el numero: "+request.numeroHabitacion());
 		
 		habitacion.actualizar(request.numeroHabitacion(), request.tipoHabitacion(),
