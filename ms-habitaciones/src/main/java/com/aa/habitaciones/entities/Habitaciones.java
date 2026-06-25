@@ -40,7 +40,7 @@ public class Habitaciones {
 	@Column(name = "NUMERO_HABITACION", nullable = false)
 	private Integer numeroHabitacion;
 	
-	@Column(name = "TIPO_HABITACION", nullable = false)
+	@Column(name = "TIPO_HABITACION", nullable = false, length = 30)
 	@Enumerated(EnumType.STRING)
 	private TipoHabitacion tipoHabitacion;
 	
@@ -50,11 +50,11 @@ public class Habitaciones {
 	@Column(name = "CAPACIDAD", nullable = false)
 	private Integer capacidad;
 	
-	@Column(name = "ESTADO_HABITACION", nullable = false)
+	@Column(name = "ESTADO_HABITACION", nullable = false, length = 15)
 	@Enumerated(EnumType.STRING)
 	private EstadoHabitacion estadoHabitacion;
 	
-	@Column(name = "ESTADO_REGISTRO", nullable = false)
+	@Column(name = "ESTADO_REGISTRO", nullable = false,length = 10)
 	@Enumerated(EnumType.STRING)
 	private EstadoRegistro estadoRegistro;
 	
