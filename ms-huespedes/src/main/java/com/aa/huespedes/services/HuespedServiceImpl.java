@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.aa.common.dto.huespedes.HuespedRequest;
+import com.aa.common.dto.huespedes.HuespedResponse;
 import com.aa.common.enums.EstadoRegistro;
 import com.aa.common.exceptions.RecursoNoEncontradoException;
-import com.aa.huespedes.dto.HuespedRequest;
-import com.aa.huespedes.dto.HuespedResponse;
 import com.aa.huespedes.entities.Huesped;
 import com.aa.huespedes.mappers.HuespedMapper;
 import com.aa.huespedes.repositories.HuespedRepository;

@@ -1,4 +1,4 @@
-package com.aa.huespedes.dto;
+package com.aa.common.dto.huespedes;
 
 import java.time.LocalDate;
 

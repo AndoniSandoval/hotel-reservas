@@ -2,9 +2,9 @@ package com.aa.huespedes.mappers;
 
 import org.springframework.stereotype.Component;
 
+import com.aa.common.dto.huespedes.HuespedRequest;
+import com.aa.common.dto.huespedes.HuespedResponse;
 import com.aa.common.mappers.CommonMapper;
-import com.aa.huespedes.dto.HuespedRequest;
-import com.aa.huespedes.dto.HuespedResponse;
 import com.aa.huespedes.entities.Huesped;
 
 @Component

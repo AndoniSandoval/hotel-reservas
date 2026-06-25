@@ -1,8 +1,8 @@
 package com.aa.huespedes.controllers;
 
 import com.aa.common.controllers.CommonController;
-import com.aa.huespedes.dto.HuespedRequest;
-import com.aa.huespedes.dto.HuespedResponse;
+import com.aa.common.dto.huespedes.HuespedRequest;
+import com.aa.common.dto.huespedes.HuespedResponse;
 import com.aa.huespedes.services.HuespedService;
 import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
