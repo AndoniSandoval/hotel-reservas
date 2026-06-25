@@ -71,10 +71,10 @@ public class Reserva {
     }
 	
 	
-	public static Reserva crear(Long idHusped, Long idHabitacion, LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
-		validaDatosReserva(idHusped,idHabitacion,fechaEntrada,fechaSalida);
+	public static Reserva crear(Long idHuesped, Long idHabitacion, LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
+		validaDatosReserva(idHuesped,idHabitacion,fechaEntrada,fechaSalida);
 		return Reserva.builder()
-				.idHusped(idHusped)
+				.idHuesped(idHuesped)
 				.idHabitacion(idHabitacion)
 				.fechaEntrada(fechaEntrada)
 				.fechaSalida(fechaSalida)
@@ -122,8 +122,8 @@ public class Reserva {
 	
 	
 	
-	private static  void validaDatosReserva(Long idHusped, Long idHabitacion, LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
-		validaId(idHusped, "huesped");
+	private static  void validaDatosReserva(Long idHuesped, Long idHabitacion, LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
+		validaId(idHuesped, "huesped");
 		validaId(idHabitacion, "habitacion");
 		validaFecha(fechaEntrada, fechaSalida);
 	};
