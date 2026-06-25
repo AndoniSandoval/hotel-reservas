@@ -28,10 +28,10 @@ spring:
               filters:
                 - StripPrefix=2
 
-            - id: msv-
-              uri: lb://msv-
+            - id: ms-reservas
+              uri: lb://ms-reservas
               predicates:
-               - Path=/api/-/**
+               - Path=/api/reservas/**
               filters:
                - StripPrefix=2
     loadbalancer:

@@ -64,7 +64,6 @@ public class Reserva {
 
     @PrePersist
     public void prePersist() {
-        this.fechaCreacion = LocalDateTime.now();
         this.estadoRegistro = EstadoRegistro.ACTIVO;
         this.estadoReserva = EstadoReserva.CONFIRMADA;
         this.fechaCreacion = LocalDateTime.now();
@@ -112,7 +111,11 @@ public class Reserva {
 	}
 	
 	
-	
+	public void cambiarEstadoReserva(EstadoReserva estadoReserva) {
+		validaNoEliminado();
+		if(estadoReserva == null)
+			throw new IllegalArgumentException("El estado reserva es nesesario");
+	}
 	
 	
 	
