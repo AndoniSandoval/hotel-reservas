@@ -1,12 +1,10 @@
 package com.aa.reservas.entities;
 
-import java.math.BigDecimal;
+
 import java.time.LocalDateTime;
 
-import com.aa.common.enums.EstadoHabitacion;
 import com.aa.common.enums.EstadoRegistro;
 import com.aa.common.enums.EstadoReserva;
-import com.aa.common.enums.TipoHabitacion;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,7 +36,7 @@ public class Reserva {
 	private Long idReserva;
 	
 	@Column(name = "ID_HUESPED", nullable = false)
-	private Long idHusped;
+	private Long idHuesped;
 	
 	@Column(name = "ID_HABITACION", nullable = false)
 	private Long idHabitacion;
