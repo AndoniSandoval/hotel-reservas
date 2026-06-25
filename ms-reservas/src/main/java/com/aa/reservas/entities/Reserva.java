@@ -81,7 +81,10 @@ public class Reserva {
 				.build();
 	};
 	
-	
+//	@PreUpdate
+//	public void preUpdate() {
+//	    this.fechaActualizacion = LocalDateTime.now();
+//	}
 	
 	public void actualizar(LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
 		validaNoEliminado();
@@ -89,13 +92,23 @@ public class Reserva {
 		
 		this.fechaEntrada=fechaEntrada;
 		this.fechaSalida = fechaSalida;
-		this.fechaActualizacion = LocalDateTime.now();
+		this.fechaActualizacion = LocalDateTime.now(); //posible usar PreUpdate
 		
 	}
 	
 	public void eliminar() {
 		validaNoEliminado();
 		this.estadoRegistro= EstadoRegistro.ELIMINADO;
+	}
+	
+	public void cambiarEstado(EstadoReserva nuevoEstado) {
+	    this.estadoReserva = nuevoEstado;
+	}
+
+	// reservas EN_CURSO -> solo fecha de salida
+	public void actualizarFechaSalida(LocalDateTime fechaSalida) {
+	    validaFecha(this.fechaEntrada, fechaSalida);
+	    this.fechaSalida = fechaSalida;
 	}
 	
 	
