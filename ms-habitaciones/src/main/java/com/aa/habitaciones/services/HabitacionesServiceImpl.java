@@ -26,12 +26,14 @@ public class HabitacionesServiceImpl implements HabitacionesService{
 	private final HabitacionMapper habitacionMapper;
 	
 	@Override
+	@Transactional(readOnly = true)
 	public List<HabitacionResponse> listar() {
 		// TODO Auto-generated method stub
 		return habitacionesRepository.findByEstadoRegistro(EstadoRegistro.ACTIVO).stream().map(habitacionMapper::entidadResponse).toList();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public HabitacionResponse obtenerPorId(Long id) {
 		// TODO Auto-generated method stub
 		

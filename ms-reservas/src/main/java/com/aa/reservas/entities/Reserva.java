@@ -13,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -60,6 +61,90 @@ public class Reserva {
 	
 	@Column(name = "FECHA_ACTUALIZACION")
 	private LocalDateTime fechaActualizacion;
-	
 
+    @PrePersist
+    public void prePersist() {
+        this.fechaCreacion = LocalDateTime.now();
+        this.estadoRegistro = EstadoRegistro.ACTIVO;
+        this.estadoReserva = EstadoReserva.CONFIRMADA;
+        this.fechaCreacion = LocalDateTime.now();
+    }
+	
+	
+	public static Reserva crear(Long idHusped, Long idHabitacion, LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
+		validaDatosReserva(idHusped,idHabitacion,fechaEntrada,fechaSalida);
+		return Reserva.builder()
+				.idHusped(idHusped)
+				.idHabitacion(idHabitacion)
+				.fechaEntrada(fechaEntrada)
+				.fechaSalida(fechaSalida)
+				.build();
+	};
+	
+	
+	
+	public void actualizar(LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
+		validaNoEliminado();
+		validaFecha(fechaEntrada, fechaSalida);
+		
+		this.fechaEntrada=fechaEntrada;
+		this.fechaSalida = fechaSalida;
+		this.fechaActualizacion = LocalDateTime.now();
+		
+	}
+	
+	public void eliminar() {
+		validaNoEliminado();
+		this.estadoRegistro= EstadoRegistro.ELIMINADO;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//Validaciones
+	private void validaNoEliminado() {
+		if (this.estadoRegistro == EstadoRegistro.ELIMINADO)
+			throw new IllegalStateException("Ya se encuentra eliminado");
+	}
+	
+	
+	
+	private static  void validaDatosReserva(Long idHusped, Long idHabitacion, LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
+		validaId(idHusped, "huesped");
+		validaId(idHabitacion, "habitacion");
+		validaFecha(fechaEntrada, fechaSalida);
+	};
+	
+	private  static  void validaId(Long id, String campo) {
+		if(id==null || id<=0)
+			throw new IllegalArgumentException("El id "+campo+" es requerido y debe ser positivo");
+	}
+	
+	private static void validaFecha(LocalDateTime fechaEntrada, LocalDateTime fechaSalidda) {
+		
+		if(fechaEntrada == null)
+			throw new IllegalArgumentException("La fecha de entra es requerida");
+		
+		if(fechaSalidda == null)
+			throw new IllegalArgumentException("La fecha de salida es requerida");
+		
+		if(fechaEntrada.isAfter(fechaSalidda))
+			throw new IllegalArgumentException("La fecha de entrada no puede ser despues de la hora de salida");
+		
+		
+	}
+	
 }

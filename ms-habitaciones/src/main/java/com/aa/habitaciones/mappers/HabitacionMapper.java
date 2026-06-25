@@ -22,14 +22,12 @@ public class HabitacionMapper implements CommonMapper<HabitacionRequest, Habitac
 		
 		return new HabitacionResponse(entidad.getIdHabitacion(),
 				entidad.getNumeroHabitacion(),
-				entidad.getTipoHabitacion().toString(),
+				entidad.getTipoHabitacion(),
 				entidad.getPrecioNoche(),
 				entidad.getCapacidad(),
-				entidad.getEstadoHabitacion().toString(),
-				entidad.getFechaCreacion().toString(),
-				(entidad.getFechaActualizacion() == null)
-			    ? null
-			    : entidad.getFechaActualizacion().toString() );
+				entidad.getEstadoHabitacion(),
+				entidad.getFechaCreacion(),
+				entidad.getFechaActualizacion());
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.aa.habitaciones.entities;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.aa.common.enums.EstadoHabitacion;
@@ -15,6 +16,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -64,6 +67,15 @@ public class Habitaciones {
 	@Column(name = "FECHA_ACTUALIZACION", nullable = false)
 	private LocalDateTime fechaActualizacion;
 
+	
+    @PrePersist
+    public void prePersist() {
+        this.fechaCreacion = LocalDateTime.now();
+        this.estadoRegistro = EstadoRegistro.ACTIVO;
+        this.estadoHabitacion =EstadoHabitacion.DISPONIBLE;
+    }
+    
+    
 	public static Habitaciones crear(Integer numeroHabitacion, TipoHabitacion tipoHabitacion, BigDecimal precioNoche, Integer capacidad) {
 		validarDatos(numeroHabitacion,tipoHabitacion,precioNoche,capacidad);
 		return Habitaciones.builder()
@@ -71,9 +83,6 @@ public class Habitaciones {
 				.tipoHabitacion(tipoHabitacion)
 				.precioNoche(precioNoche)
 				.capacidad(capacidad)
-				.estadoHabitacion(EstadoHabitacion.DISPONIBLE)
-				.estadoRegistro(EstadoRegistro.ACTIVO)
-				.fechaCreacion(LocalDateTime.now())
 				.build();
 	}
 
