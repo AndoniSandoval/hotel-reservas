@@ -41,7 +41,7 @@ public class ReservaMapper implements CommonMapper<ReservaRequest, ReservaRespon
             entidad.getFechaCreacion(),
             entidad.getFechaActualizacion(),
             new DatosHuesped(
-            	huesped.idHuesped(),
+            	huesped.id(),
                 huesped.nombre() + " " + huesped.apellidoPaterno() + " " + huesped.apellidoMaterno(),
                 huesped.email(),
                 huesped.telefono(),
