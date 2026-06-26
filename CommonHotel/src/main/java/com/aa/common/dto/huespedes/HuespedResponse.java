@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import com.aa.common.enums.EstadoRegistro;
 
 public record HuespedResponse(
-		 Long id,
+		 Long idHuesped,
 		 String nombre,
 		 String apellidoPaterno,
 		 String apellidoMaterno,

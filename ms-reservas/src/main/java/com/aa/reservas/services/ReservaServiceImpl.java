@@ -58,6 +58,8 @@ public class ReservaServiceImpl implements ReservaService{
 		HabitacionResponse habitacion = 
 			    habitacionClient.obtenerHabitacion(request.idHabitacion());
 		
+		// verifica que la habitacion existe, está activa y disponible
+        log.info("Verificando habitacion disponible con id: {}", request.idHabitacion());
 		if (habitacion.estadoHabitacion() != EstadoHabitacion.DISPONIBLE) {
 		    throw new EntidadRelacionadaException(
 		        "La habitacion con id " + request.idHabitacion() + " no esta disponible");
@@ -66,10 +68,6 @@ public class ReservaServiceImpl implements ReservaService{
 		// verifica que huesped existe y esta activo
 		log.info("Verificando huesped activo con id: {}", request.idHuesped());
         	huespedClient.obtenerHuespedActivo(request.idHuesped());
-        
-        // verifica que la habitacion existe, está activa y disponible
-        log.info("Verificando habitacion disponible con id: {}", request.idHabitacion());
-        	habitacionClient.obtenerHabitacion(request.idHabitacion());
         
 		Reserva reserva = reservaMapper.requestEntidad(request);
 		reservaRepository.save(reserva);
@@ -96,12 +94,14 @@ public class ReservaServiceImpl implements ReservaService{
 	@Override
 	public void eliminar(Long id) {
 		log.info("Eliminando reserva con id: {}", id);
+		
 		Reserva reserva = obtenerReservaActivaPorIdOException(id);
 		
-		//validar que no este en_curso
-		if (reserva.getEstadoReserva() == EstadoReserva.EN_CURSO) {
+		//validar que tenga estado cancelada o finalizada para eliminar
+		if (reserva.getEstadoReserva() != EstadoReserva.CANCELADA &&
+		        reserva.getEstadoReserva() != EstadoReserva.FINALIZADA) {
 	        throw new EntidadRelacionadaException(
-	            "No se puede eliminar una reserva en estado EN_CURSO");
+	        		"Solo pueden eliminarse reservas CANCELADAS o FINALIZADAS");
 	    }
 		
 		reserva.eliminar();

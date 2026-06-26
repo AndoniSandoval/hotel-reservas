@@ -28,7 +28,7 @@ public class ReservaMapper implements CommonMapper<ReservaRequest, ReservaRespon
             "Use entidadResponse(Reserva, HuespedResponse, HabitacionResponse)");
     }
 	
-	// Método enriquecido — el que usará el service
+	// metodo enriquecido — el que usara el service
     public ReservaResponse entidadResponse(Reserva entidad,
                                             HuespedResponse huesped,
                                             HabitacionResponse habitacion) {
@@ -41,6 +41,7 @@ public class ReservaMapper implements CommonMapper<ReservaRequest, ReservaRespon
             entidad.getFechaCreacion(),
             entidad.getFechaActualizacion(),
             new DatosHuesped(
+            	huesped.idHuesped(),
                 huesped.nombre() + " " + huesped.apellidoPaterno() + " " + huesped.apellidoMaterno(),
                 huesped.email(),
                 huesped.telefono(),
@@ -48,6 +49,7 @@ public class ReservaMapper implements CommonMapper<ReservaRequest, ReservaRespon
                 huesped.nacionalidad()
             ),
             new DatosHabitacion(
+            	habitacion.idHabitacion(),
                 habitacion.numeroHabitacion(),
                 habitacion.tipoHabitacion(),
                 habitacion.precioNoche(),
