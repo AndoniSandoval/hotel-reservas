@@ -87,7 +87,7 @@ public class ReservaServiceImpl implements ReservaService{
 //		
 //		reserva.actualizar(request.fechaEntrada(), request.fechaSalida());
 //		return null;
-		throw new UnsupportedOperationException(
+		throw new IllegalStateException(
 		        "Use actualizarFechas() para modificar una reserva");
 	}
 

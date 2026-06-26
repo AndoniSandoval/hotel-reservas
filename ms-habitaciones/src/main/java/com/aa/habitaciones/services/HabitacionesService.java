@@ -6,5 +6,5 @@ import com.aa.common.services.CrudService;
 
 public interface HabitacionesService extends CrudService<HabitacionRequest, HabitacionResponse> {
 	
-
+	void cambiarEstado(Long idHabitacion, Long idEstado);
 }

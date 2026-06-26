@@ -105,12 +105,23 @@ public class Habitaciones {
 		this.estadoRegistro = estadoRegistro.ELIMINADO;
 	}
 	
-	private void actualizarEstadoHabitacion(EstadoHabitacion nuevoEstadoHabitacion) {
-		validarNoEliminado();
-		if(nuevoEstadoHabitacion == null)
-			throw new IllegalArgumentException("El estado es requerido");
-		this.estadoHabitacion = nuevoEstadoHabitacion;
-		
+//	private void actualizarEstadoHabitacion(EstadoHabitacion nuevoEstadoHabitacion) {
+//		validarNoEliminado();
+//		if(nuevoEstadoHabitacion == null)
+//			throw new IllegalArgumentException("El estado es requerido");
+//		this.estadoHabitacion = nuevoEstadoHabitacion;
+//		
+//	}
+	
+	public void cambiarEstado(EstadoHabitacion nuevoEstado) {
+	    validarNoEliminado();
+
+	    if (nuevoEstado == null) {
+	        throw new IllegalArgumentException("El estado es requerido");
+	    }
+
+	    this.estadoHabitacion = nuevoEstado;
+	    this.fechaActualizacion = LocalDateTime.now();
 	}
 	
 	
