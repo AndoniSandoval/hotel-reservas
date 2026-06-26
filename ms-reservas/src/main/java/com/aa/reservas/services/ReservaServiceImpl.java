@@ -5,8 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.aa.common.dto.habitaciones.HabitacionResponse;
+import com.aa.common.dto.huespedes.HuespedResponse;
+import com.aa.common.enums.EstadoHabitacion;
 import com.aa.common.enums.EstadoRegistro;
 import com.aa.common.enums.EstadoReserva;
+import com.aa.common.exceptions.EntidadRelacionadaException;
 import com.aa.common.exceptions.RecursoNoEncontradoException;
 import com.aa.reservas.clients.HabitacionClient;
 import com.aa.reservas.clients.HuespedClient;
@@ -36,14 +40,14 @@ public class ReservaServiceImpl implements ReservaService{
 		log.info("Listando todas las reservas activas");
 		return reservaRepository.findByEstadoRegistro(EstadoRegistro.ACTIVO)
 				.stream()
-				.map(reservaMapper::entidadResponse)
+				.map(this::enriquecer)
 				.toList();
 	}
 
 	@Override
 	public ReservaResponse obtenerPorId(Long id) {
 		log.info("Buscando reserva activa con id: {}", id);
-		return reservaMapper.entidadResponse(obtenerReservaActivaPorIdOException(id));
+		return enriquecer(obtenerReservaActivaPorIdOException(id));
 	}
 
 	@Override
@@ -51,28 +55,26 @@ public class ReservaServiceImpl implements ReservaService{
 		log.info("Registrando nueva reserva para huesped id: {} habitacion id: {}",
                 request.idHuesped(), request.idHabitacion());
 		
+		HabitacionResponse habitacion = 
+			    habitacionClient.obtenerHabitacion(request.idHabitacion());
+		
+		// verifica que la habitacion existe, está activa y disponible
+        log.info("Verificando habitacion disponible con id: {}", request.idHabitacion());
+		if (habitacion.estadoHabitacion() != EstadoHabitacion.DISPONIBLE) {
+		    throw new EntidadRelacionadaException(
+		        "La habitacion con id " + request.idHabitacion() + " no esta disponible");
+		}
+		
 		// verifica que huesped existe y esta activo
 		log.info("Verificando huesped activo con id: {}", request.idHuesped());
-        huespedClient.obtenerHuespedActivo(request.idHuesped());
+        	huespedClient.obtenerHuespedActivo(request.idHuesped());
         
-        // verifica que la habitacion existe, está activa y disponible
-        log.info("Verificando habitacion disponible con id: {}", request.idHabitacion());
-        habitacionClient.verificarHabitacionDisponible(request.idHabitacion());
-        
-		//Reserva reserva = reservaMapper.requestEntidad(request);
-		
-		Reserva reserva = Reserva.crear(
-                request.idHuesped(),
-                request.idHabitacion(),
-                request.fechaEntrada(),
-                request.fechaSalida()
-        );
-		
+		Reserva reserva = reservaMapper.requestEntidad(request);
 		reservaRepository.save(reserva);
 		
 		//cambiar habitacion a ocupada
         log.info("Cambiando habitacion id: {} a OCUPADA", request.idHabitacion());
-        habitacionClient.cambiarEstadoHabitacion(request.idHabitacion(), 2L); // 2 = OCUPADA
+        	habitacionClient.cambiarEstadoHabitacion(request.idHabitacion(), 2L); // 2 = OCUPADA
 
         log.info("Reserva registrada exitosamente con id: {}", reserva.getIdReserva());
      
@@ -81,18 +83,29 @@ public class ReservaServiceImpl implements ReservaService{
 
 	@Override
 	public ReservaResponse actualizar(ReservaRequest request, Long id) {
-		// TODO Auto-generated method stub
-		Reserva reserva = obtenerReservaActivaPorIdOException(id);
-		
-		reserva.actualizar(request.fechaEntrada(), request.fechaSalida());
-		return null;
+//		Reserva reserva = obtenerReservaActivaPorIdOException(id);
+//		
+//		reserva.actualizar(request.fechaEntrada(), request.fechaSalida());
+//		return null;
+		throw new UnsupportedOperationException(
+		        "Use actualizarFechas() para modificar una reserva");
 	}
 
 	@Override
 	public void eliminar(Long id) {
 		log.info("Eliminando reserva con id: {}", id);
+		
 		Reserva reserva = obtenerReservaActivaPorIdOException(id);
+		
+		//validar que tenga estado cancelada o finalizada para eliminar
+		if (reserva.getEstadoReserva() != EstadoReserva.CANCELADA &&
+		        reserva.getEstadoReserva() != EstadoReserva.FINALIZADA) {
+	        throw new EntidadRelacionadaException(
+	        		"Solo pueden eliminarse reservas CANCELADAS o FINALIZADAS");
+	    }
+		
 		reserva.eliminar();
+		
 		log.info("Reserva eliminada logicamente con id: {}", id);
 		
 	}
@@ -119,11 +132,10 @@ public class ReservaServiceImpl implements ReservaService{
 	
 	@Override
 	public ReservaResponse actualizarFechas(ReservaUpdateRequest request, Long id) {
-		log.info("Actualizando fechas de reserva con id: {}", id);
-		
-		Reserva reserva = obtenerReservaActivaPorIdOException(id);
+	    log.info("Actualizando fechas de reserva con id: {}", id);
+	    Reserva reserva = obtenerReservaActivaPorIdOException(id);
 
-		switch (reserva.getEstadoReserva()) {
+	    switch (reserva.getEstadoReserva()) {
 	        case CONFIRMADA -> {
 	            log.info("Reserva CONFIRMADA — actualizando fechaEntrada y fechaSalida");
 	            reserva.actualizar(request.fechaEntrada(), request.fechaSalida());
@@ -135,10 +147,10 @@ public class ReservaServiceImpl implements ReservaService{
 	        default -> throw new IllegalStateException(
 	                "No se pueden modificar fechas de una reserva en estado: "
 	                + reserva.getEstadoReserva());
-		    }
-	
+	    }
+
 	    log.info("Fechas de reserva id: {} actualizadas exitosamente", id);
-	    return reservaMapper.entidadResponse(reserva);
+	    return enriquecer(reserva);
 	}
 	
 	//  METODOS PRIVADOS HELPER
@@ -183,18 +195,26 @@ public class ReservaServiceImpl implements ReservaService{
 
 	@Override
 	public ReservaResponse cambiarEstado(Long idReserva, Long idEstado) {
-		log.info("Cambiando estado de reserva id: {} al estado id: {}", idReserva, idEstado);
+	    log.info("Cambiando estado de reserva id: {} al estado id: {}", idReserva, idEstado);
 
-        Reserva reserva = obtenerReservaActivaPorIdOException(idReserva);
-        EstadoReserva estadoActual = reserva.getEstadoReserva();
-        EstadoReserva nuevoEstado = EstadoReserva.obtenerEstadoReservaPorCodigo(idEstado);
+	    Reserva reserva = obtenerReservaActivaPorIdOException(idReserva);
+	    EstadoReserva estadoActual = reserva.getEstadoReserva();
+	    EstadoReserva nuevoEstado = EstadoReserva.obtenerEstadoReservaPorCodigo(idEstado);
 
-        validarTransicionEstado(estadoActual, nuevoEstado, reserva.getIdHabitacion());
+	    validarTransicionEstado(estadoActual, nuevoEstado, reserva.getIdHabitacion());
+	    reserva.cambiarEstado(nuevoEstado);
 
-        reserva.cambiarEstado(nuevoEstado);
-
-        log.info("Estado de reserva id: {} cambio de {} a {}", idReserva, estadoActual, nuevoEstado);
-        return reservaMapper.entidadResponse(reserva);
+	    log.info("Estado de reserva id: {} cambio de {} a {}", idReserva, estadoActual, nuevoEstado);
+	    return enriquecer(reserva);
+	}
+	
+	// metodo helper privado
+	private ReservaResponse enriquecer(Reserva reserva) {
+	    HuespedResponse huesped = 
+	        huespedClient.obtenerHuespedActivo(reserva.getIdHuesped());
+	    HabitacionResponse habitacion = 
+	        habitacionClient.obtenerHabitacion(reserva.getIdHabitacion());
+	    return reservaMapper.entidadResponse(reserva, huesped, habitacion);
 	}
 	
 }

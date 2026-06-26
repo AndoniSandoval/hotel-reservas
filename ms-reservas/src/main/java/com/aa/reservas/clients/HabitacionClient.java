@@ -11,7 +11,7 @@ import com.aa.common.dto.habitaciones.HabitacionResponse;
 public interface HabitacionClient {
 
 	@GetMapping("/habitaciones/id-habitacion/{id}")
-    HabitacionResponse verificarHabitacionDisponible(@PathVariable Long id);
+    HabitacionResponse obtenerHabitacion(@PathVariable Long id);
 
     @PutMapping("/habitaciones/{id}/estado/{idEstado}")
     void cambiarEstadoHabitacion(@PathVariable Long id, @PathVariable Long idEstado);

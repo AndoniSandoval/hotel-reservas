@@ -117,19 +117,6 @@ public class Reserva {
 			throw new IllegalArgumentException("El estado reserva es nesesario");
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	//Validaciones
 	private void validaNoEliminado() {
 		if (this.estadoRegistro == EstadoRegistro.ELIMINADO)
@@ -149,17 +136,20 @@ public class Reserva {
 			throw new IllegalArgumentException("El id "+campo+" es requerido y debe ser positivo");
 	}
 	
-	private static void validaFecha(LocalDateTime fechaEntrada, LocalDateTime fechaSalidda) {
+	private static void validaFecha(LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
 		
-		if(fechaEntrada == null)
-			throw new IllegalArgumentException("La fecha de entra es requerida");
-		
-		if(fechaSalidda == null)
-			throw new IllegalArgumentException("La fecha de salida es requerida");
-		
-		if(fechaEntrada.isAfter(fechaSalidda))
-			throw new IllegalArgumentException("La fecha de entrada no puede ser despues de la hora de salida");
-		
+//		if(fechaEntrada == null)
+//			throw new IllegalArgumentException("La fecha de entra es requerida");
+//		
+//		if(fechaSalida == null)
+//			throw new IllegalArgumentException("La fecha de salida es requerida");
+//		
+//		if(fechaEntrada.isAfter(fechaSalida))
+//			throw new IllegalArgumentException("La fecha de entrada no puede ser despues de la hora de salida");
+		if (!fechaEntrada.isBefore(fechaSalida)) {
+		    throw new IllegalArgumentException(
+		        "La fecha de entrada debe ser menor que la fecha de salida");
+		}
 		
 	}
 	
