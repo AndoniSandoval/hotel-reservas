@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.aa.common.dto.habitaciones.HabitacionRequest;
 import com.aa.common.dto.habitaciones.HabitacionResponse;
+import com.aa.common.enums.EstadoHabitacion;
 import com.aa.common.enums.EstadoRegistro;
 import com.aa.common.exceptions.RecursoNoEncontradoException;
 import com.aa.habitaciones.entities.Habitaciones;
@@ -58,7 +59,6 @@ public class HabitacionesServiceImpl implements HabitacionesService{
 	public HabitacionResponse actualizar(HabitacionRequest request, Long id) {
 		// TODO Auto-generated method stub
 		
-		
 		Habitaciones habitacion = obtenerHabitacionActivaPorIdOException(id);
 		
 		if(habitacionesRepository.existsByNumeroHabitacionAndIdHabitacionNotAndEstadoRegistro(request.numeroHabitacion(),id,EstadoRegistro.ACTIVO))
@@ -79,5 +79,16 @@ public class HabitacionesServiceImpl implements HabitacionesService{
 	
 	private Habitaciones obtenerHabitacionActivaPorIdOException(Long id) {
 		return habitacionesRepository.findByIdHabitacionAndEstadoRegistro(id,EstadoRegistro.ACTIVO).orElseThrow(()-> new RecursoNoEncontradoException("No se encontro la habitacion"));
+	}
+	
+	@Override
+	public void cambiarEstado(Long idHabitacion, Long idEstado) {
+
+	    Habitaciones habitacion = obtenerHabitacionActivaPorIdOException(idHabitacion);
+
+	    EstadoHabitacion nuevoEstado =
+	        EstadoHabitacion.obtenerEstadoHabitacionPorCodigo(idEstado);
+
+	    habitacion.cambiarEstado(nuevoEstado);
 	}
 }
