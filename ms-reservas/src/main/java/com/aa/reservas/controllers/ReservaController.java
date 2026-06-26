@@ -2,6 +2,7 @@ package com.aa.reservas.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,7 +20,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 
 @RestController
-@RequestMapping("/reservas")
 public class ReservaController extends CommonController<ReservaRequest, ReservaResponse, ReservaService>{
 
 	public ReservaController(ReservaService service) {
@@ -28,7 +28,7 @@ public class ReservaController extends CommonController<ReservaRequest, ReservaR
 	
 	// Sobreescribe el PUT heredado de CommonController
     @PutMapping("/{id}")
-    @Override
+    //@Override
     public ResponseEntity<ReservaResponse> actualizar(
             @PathVariable @Positive(message = "El id debe ser positivo") Long id,
             @Valid @RequestBody ReservaUpdateRequest request) {
@@ -41,5 +41,17 @@ public class ReservaController extends CommonController<ReservaRequest, ReservaR
             @PathVariable @Positive(message = "El id debe ser positivo") Long idReserva,
             @PathVariable @Positive(message = "El id de estado debe ser positivo") Long idEstado) {
         return ResponseEntity.ok(service.cambiarEstado(idReserva, idEstado));
+    }
+    
+    @GetMapping("/huesped/{idHuesped}/en-curso")
+    public ResponseEntity<Boolean> huespedTieneReservasEnCurso(
+            @PathVariable @Positive Long idHuesped) {
+        return ResponseEntity.ok(service.huespedTieneReservasEnCurso(idHuesped));
+    }
+
+    @GetMapping("/habitacion/{idHabitacion}/en-curso")
+    public ResponseEntity<Boolean> habitacionTieneReservasEnCurso(
+            @PathVariable @Positive Long idHabitacion) {
+        return ResponseEntity.ok(service.habitacionTieneReservasEnCurso(idHabitacion));
     }
 }

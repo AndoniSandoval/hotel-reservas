@@ -117,19 +117,6 @@ public class Reserva {
 			throw new IllegalArgumentException("El estado reserva es nesesario");
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	//Validaciones
 	private void validaNoEliminado() {
 		if (this.estadoRegistro == EstadoRegistro.ELIMINADO)
