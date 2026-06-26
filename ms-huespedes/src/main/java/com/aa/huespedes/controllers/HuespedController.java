@@ -6,7 +6,6 @@ import com.aa.common.dto.huespedes.HuespedResponse;
 import com.aa.huespedes.services.HuespedService;
 import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
